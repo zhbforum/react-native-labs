@@ -1,16 +1,17 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { RootStackParamList } from './types';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NewsScreen } from '@screens/NewsScreen/NewsScreen';
 import { GalleryScreen } from '@screens/GalleryScreen/GalleryScreen';
 import { RegisterScreen } from '@screens/RegisterScreen/RegisterScreen';
+import { RootTabParamList } from './types';
+import { getTabBarIcon } from './tabBarIcons';
 import { colors } from '@theme/colors';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export function RootNavigator() {
   return (
-    <Stack.Navigator
+    <Tab.Navigator
       initialRouteName="News"
       screenOptions={{
         headerStyle: {
@@ -20,26 +21,48 @@ export function RootNavigator() {
         headerTitleStyle: {
           fontWeight: '700',
         },
-        contentStyle: {
+        sceneStyle: {
           backgroundColor: colors.background,
+        },
+        tabBarStyle: {
+          backgroundColor: colors.surface,
+          borderTopColor: colors.border,
+          height: 64,
+          paddingTop: 6,
+          paddingBottom: 6,
+        },
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '600',
         },
       }}
     >
-      <Stack.Screen
+      <Tab.Screen
         name="News"
         component={NewsScreen}
-        options={{ title: 'Новини' }}
+        options={{
+          title: 'Новини',
+          tabBarIcon: getTabBarIcon('News'),
+        }}
       />
-      <Stack.Screen
+      <Tab.Screen
         name="Gallery"
         component={GalleryScreen}
-        options={{ title: 'Фотогалерея' }}
+        options={{
+          title: 'Галерея',
+          tabBarIcon: getTabBarIcon('Gallery'),
+        }}
       />
-      <Stack.Screen
+      <Tab.Screen
         name="Register"
         component={RegisterScreen}
-        options={{ title: 'Реєстрація' }}
+        options={{
+          title: 'Реєстрація',
+          tabBarIcon: getTabBarIcon('Register'),
+        }}
       />
-    </Stack.Navigator>
+    </Tab.Navigator>
   );
 }

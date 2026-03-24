@@ -4,6 +4,7 @@ import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootNavigator } from '@navigation/RootNavigator';
 import { colors } from '@theme/colors';
+import { AppProvider } from '@context/AppContext';
 
 export default function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -22,13 +23,15 @@ export default function App(): React.JSX.Element {
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer theme={navigationTheme}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={colors.background}
-        />
-        <RootNavigator />
-      </NavigationContainer>
+      <AppProvider>
+        <NavigationContainer theme={navigationTheme}>
+          <StatusBar
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            backgroundColor={colors.background}
+          />
+          <RootNavigator />
+        </NavigationContainer>
+      </AppProvider>
     </SafeAreaProvider>
   );
 }

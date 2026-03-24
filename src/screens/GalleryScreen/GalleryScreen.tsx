@@ -1,25 +1,32 @@
 import React from 'react';
-import { Alert, ScrollView, View } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Alert, ScrollView, Text, View } from 'react-native';
 import { ScreenContainer } from '@components/ScreenContainer';
 import { SectionTitle } from '@components/SectionTitle';
 import { galleryData } from '@data/gallery';
 import { GalleryTile } from '@components/GalleryTile';
-import { PrimaryButton } from '@components/PrimaryButton';
-import { RootStackParamList } from '@navigation/types';
+import { useAppContext } from '@context/AppContext';
 import { styles } from './styles';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Gallery'>;
+export function GalleryScreen() {
+  const { user } = useAppContext();
 
-export function GalleryScreen({ navigation }: Props) {
   return (
     <ScreenContainer>
       <SectionTitle>Фотогалерея</SectionTitle>
 
-      <PrimaryButton
-        title="Перейти до реєстрації"
-        onPress={() => navigation.navigate('Register')}
-      />
+      {user ? (
+        <View style={styles.userInfo}>
+          <Text style={styles.userText}>
+            Галерея користувача: {user.name} {user.surname}
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.userInfo}>
+          <Text style={styles.userText}>
+            Для персоналізації зареєструйтеся.
+          </Text>
+        </View>
+      )}
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -30,7 +37,14 @@ export function GalleryScreen({ navigation }: Props) {
             <GalleryTile
               key={item.id}
               image={item.image}
-              onPress={() => Alert.alert('Фото', `Відкрито фото №${item.id}`)}
+              onPress={() =>
+                Alert.alert(
+                  'Фото',
+                  user
+                    ? `Користувач ${user.name} відкрив фото №${item.id}`
+                    : `Відкрито фото №${item.id}`,
+                )
+              }
             />
           ))}
         </View>

@@ -8,7 +8,8 @@
       "@screens/*": ["./src/screens/*"],
       "@navigation/*": ["./src/navigation/*"],
       "@theme/*": ["./src/theme/*"],
-      "@data/*": ["./src/data/*"]
+      "@data/*": ["./src/data/*"],
+      "@context/*": ["./src/context/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

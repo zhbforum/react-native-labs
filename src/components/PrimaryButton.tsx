@@ -1,5 +1,11 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import {
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  Text,
+  ViewStyle,
+} from 'react-native';
 import { colors } from '@theme/colors';
 import { spacing } from '@theme/spacing';
 import { typography } from '@theme/typography';
@@ -7,13 +13,18 @@ import { typography } from '@theme/typography';
 type Props = {
   title: string;
   onPress: () => void;
+  style?: StyleProp<ViewStyle>;
 };
 
-export function PrimaryButton({ title, onPress }: Props) {
+export function PrimaryButton({ title, onPress, style }: Props) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+      style={({ pressed }) => [
+        styles.button,
+        style,
+        pressed && styles.buttonPressed,
+      ]}
     >
       <Text style={styles.text}>{title}</Text>
     </Pressable>
