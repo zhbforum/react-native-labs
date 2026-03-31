@@ -10,7 +10,10 @@ type Props = {
 
 export function GalleryTile({ image, onPress }: Props) {
   return (
-    <Pressable onPress={onPress} style={styles.card}>
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+    >
       <Image source={{ uri: image }} style={styles.image} />
     </Pressable>
   );
@@ -28,6 +31,10 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 2 },
     elevation: 3,
+  },
+  cardPressed: {
+    opacity: 0.86,
+    transform: [{ scale: 0.97 }],
   },
   image: {
     width: '100%',

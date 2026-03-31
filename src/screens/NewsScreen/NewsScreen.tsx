@@ -1,16 +1,25 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Animated, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import { ScreenContainer } from '@components/ScreenContainer';
 import { SectionTitle } from '@components/SectionTitle';
 import { NewsCard } from '@components/NewsCard';
 import { newsData } from '@data/news';
 import { useAppContext } from '@context/AppContext';
+import { RootStackParamList } from '@navigation/types';
+
 import { NewsHeader } from './components/NewsHeader';
-import { handleNewsPress } from './helpers';
 import { styles } from './styles';
+import { useNewsListAnimation } from './useNewsListAnimation';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export function NewsScreen() {
   const { user } = useAppContext();
+  const navigation = useNavigation<NavigationProp>();
+  const animatedValues = useNewsListAnimation(newsData.length);
 
   return (
     <ScreenContainer>
@@ -22,12 +31,23 @@ export function NewsScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {newsData.map(item => (
-          <NewsCard
+        {newsData.map((item, index) => (
+          <Animated.View
             key={item.id}
-            item={item}
-            onPress={() => handleNewsPress(item)}
-          />
+            style={{
+              opacity: animatedValues[index]?.opacity,
+              transform: [
+                { translateY: animatedValues[index]?.translateY ?? 0 },
+              ],
+            }}
+          >
+            <NewsCard
+              item={item}
+              onPress={() =>
+                navigation.navigate('NewsDetails', { newsId: item.id })
+              }
+            />
+          </Animated.View>
         ))}
       </ScrollView>
     </ScreenContainer>

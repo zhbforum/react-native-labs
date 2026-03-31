@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
   },
   buttonPressed: {
     backgroundColor: colors.primaryPressed,
+    opacity: 0.9,
+    transform: [{ scale: 0.97 }],
   },
   text: {
     color: '#fff',

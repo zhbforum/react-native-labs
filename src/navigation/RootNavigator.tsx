@@ -1,15 +1,21 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { NewsScreen } from '@screens/NewsScreen/NewsScreen';
 import { GalleryScreen } from '@screens/GalleryScreen/GalleryScreen';
 import { RegisterScreen } from '@screens/RegisterScreen/RegisterScreen';
-import { RootTabParamList } from './types';
+import { NewsDetailsScreen } from '@screens/NewsScreen/NewsDetailsScreen';
+import { PhotoViewerScreen } from '@screens/GalleryScreen/PhotoViewerScreen';
+
+import { RootStackParamList, RootTabParamList } from './types';
 import { getTabBarIcon } from './tabBarIcons';
 import { colors } from '@theme/colors';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export function RootNavigator() {
+function MainTabs() {
   return (
     <Tab.Navigator
       initialRouteName="News"
@@ -64,5 +70,50 @@ export function RootNavigator() {
         }}
       />
     </Tab.Navigator>
+  );
+}
+
+export function RootNavigator() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="MainTabs"
+        component={MainTabs}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="NewsDetails"
+        component={NewsDetailsScreen}
+        options={{
+          title: 'Деталі новини',
+          animation: 'slide_from_right',
+          headerStyle: {
+            backgroundColor: colors.surface,
+          },
+          headerTintColor: colors.textPrimary,
+          headerTitleStyle: {
+            fontWeight: '700',
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="PhotoViewer"
+        component={PhotoViewerScreen}
+        options={{
+          title: 'Фото',
+          animation: 'fade',
+          presentation: 'fullScreenModal',
+          headerStyle: {
+            backgroundColor: colors.surface,
+          },
+          headerTintColor: colors.textPrimary,
+          headerTitleStyle: {
+            fontWeight: '700',
+          },
+        }}
+      />
+    </Stack.Navigator>
   );
 }

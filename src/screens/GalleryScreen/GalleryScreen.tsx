@@ -1,14 +1,21 @@
 import React from 'react';
-import { Alert, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 import { ScreenContainer } from '@components/ScreenContainer';
 import { SectionTitle } from '@components/SectionTitle';
 import { galleryData } from '@data/gallery';
 import { GalleryTile } from '@components/GalleryTile';
 import { useAppContext } from '@context/AppContext';
 import { styles } from './styles';
+import { RootStackParamList } from '@navigation/types';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export function GalleryScreen() {
   const { user } = useAppContext();
+  const navigation = useNavigation<NavigationProp>();
 
   return (
     <ScreenContainer>
@@ -33,17 +40,14 @@ export function GalleryScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.grid}>
-          {galleryData.map(item => (
+          {galleryData.map((item, index) => (
             <GalleryTile
               key={item.id}
               image={item.image}
               onPress={() =>
-                Alert.alert(
-                  'Фото',
-                  user
-                    ? `Користувач ${user.name} відкрив фото №${item.id}`
-                    : `Відкрито фото №${item.id}`,
-                )
+                navigation.navigate('PhotoViewer', {
+                  initialIndex: index,
+                })
               }
             />
           ))}
