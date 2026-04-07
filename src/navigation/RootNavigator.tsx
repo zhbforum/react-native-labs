@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NewsScreen } from '@screens/NewsScreen/NewsScreen';
 import { GalleryScreen } from '@screens/GalleryScreen/GalleryScreen';
 import { RegisterScreen } from '@screens/RegisterScreen/RegisterScreen';
+import { AuthScreen } from '@screens/AuthScreen/AuthScreen';
 import { NewsDetailsScreen } from '@screens/NewsScreen/NewsDetailsScreen';
 import { PhotoViewerScreen } from '@screens/GalleryScreen/PhotoViewerScreen';
 
@@ -53,6 +54,7 @@ function MainTabs() {
           tabBarIcon: getTabBarIcon('News'),
         }}
       />
+
       <Tab.Screen
         name="Gallery"
         component={GalleryScreen}
@@ -61,12 +63,22 @@ function MainTabs() {
           tabBarIcon: getTabBarIcon('Gallery'),
         }}
       />
+
       <Tab.Screen
         name="Register"
         component={RegisterScreen}
         options={{
           title: 'Реєстрація',
           tabBarIcon: getTabBarIcon('Register'),
+        }}
+      />
+
+      <Tab.Screen
+        name="Auth"
+        component={AuthScreen}
+        options={{
+          title: 'Авторизація',
+          tabBarIcon: getTabBarIcon('Auth'),
         }}
       />
     </Tab.Navigator>

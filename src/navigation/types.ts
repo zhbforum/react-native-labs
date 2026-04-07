@@ -2,6 +2,7 @@ export type RootTabParamList = {
   News: undefined;
   Gallery: undefined;
   Register: undefined;
+  Auth: undefined;
 };
 
 export type RootStackParamList = {

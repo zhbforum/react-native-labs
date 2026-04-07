@@ -13,6 +13,7 @@ const tabIconsMap: Record<keyof RootTabParamList, LucideIconName> = {
   News: 'newspaper',
   Gallery: 'images',
   Register: 'circle-user-round',
+  Auth: 'log-in',
 };
 
 export function getTabBarIcon(routeName: keyof RootTabParamList) {
