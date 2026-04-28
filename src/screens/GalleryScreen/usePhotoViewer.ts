@@ -4,9 +4,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from 'react-native';
-import { galleryData } from '@data/gallery';
-
-type GalleryItem = (typeof galleryData)[number];
+import type { GalleryItem } from '@data/gallery';
 
 export function usePhotoViewer(initialIndex: number, width: number) {
   const flatListRef = useRef<FlatList<GalleryItem>>(null);

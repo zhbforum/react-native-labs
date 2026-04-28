@@ -1,49 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { ScreenContainer } from '@components/ScreenContainer';
 import { SectionTitle } from '@components/SectionTitle';
 import { FormInput } from '@components/FormInput';
 import { PrimaryButton } from '@components/PrimaryButton';
-import { useAppContext } from '@context/AppContext';
 import { RootTabParamList } from '@navigation/types';
-import { showRegisterSuccessAlert, validateRegisterForm } from './helpers';
 import { styles } from './styles';
+import { useRegisterForm } from './useRegisterForm';
 
 type Props = BottomTabScreenProps<RootTabParamList, 'Register'>;
 
 export function RegisterScreen({ navigation }: Props) {
-  const { setUser } = useAppContext();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
-  const [surname, setSurname] = useState('');
-  const [name, setName] = useState('');
-
-  const handleSubmit = () => {
-    const form = {
-      email,
-      password,
-      repeatPassword,
-      surname,
-      name,
-    };
-
-    if (!validateRegisterForm(form)) {
-      return;
-    }
-
-    setUser({
-      name: name.trim(),
-      surname: surname.trim(),
-      email: email.trim(),
-    });
-
-    showRegisterSuccessAlert(name, surname, email, () =>
-      navigation.navigate('News'),
-    );
-  };
+  const {
+    email,
+    password,
+    repeatPassword,
+    surname,
+    name,
+    setEmail,
+    setPassword,
+    setRepeatPassword,
+    setSurname,
+    setName,
+    handleSubmit,
+  } = useRegisterForm({ navigation });
 
   return (
     <ScreenContainer>
@@ -87,8 +68,8 @@ export function RegisterScreen({ navigation }: Props) {
         />
 
         <FormInput
-          label="Ім’я"
-          placeholder="Ваше ім’я"
+          label="Імʼя"
+          placeholder="Ваше імʼя"
           value={name}
           onChangeText={setName}
         />

@@ -2,8 +2,14 @@ import { useMemo, useState } from 'react';
 import Toast from 'react-native-toast-message';
 
 import { useAppContext } from '@context/AppContext';
+import { initializeDatabase } from '../../database/database';
+import {
+  getUserByCredentials,
+  setCurrentUser,
+  toUserData,
+} from '../../database/users/queries';
 import { AUTH_DEMO_CREDENTIALS } from './constants';
-import { getAuthValidationErrors, isValidCredentials } from './helpers';
+import { getAuthValidationErrors } from './helpers';
 
 type Navigation = {
   navigate: (screen: 'News') => void;
@@ -29,7 +35,7 @@ export function useAuthForm({ navigation }: Props) {
     setPassword('');
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const currentErrors = getAuthValidationErrors({ email, password });
 
     if (currentErrors.email || currentErrors.password) {
@@ -41,34 +47,38 @@ export function useAuthForm({ navigation }: Props) {
       return;
     }
 
-    const success = isValidCredentials(
-      { email, password },
-      AUTH_DEMO_CREDENTIALS,
-    );
+    try {
+      const db = await initializeDatabase();
+      const user = await getUserByCredentials(db, { email, password });
 
-    if (!success) {
+      if (!user) {
+        Toast.show({
+          type: 'error',
+          text1: 'Помилка авторизації',
+          text2: 'Невірна електронна пошта або пароль.',
+        });
+        return;
+      }
+
+      await setCurrentUser(db, user.id);
+      setUser(toUserData(user));
+
+      Toast.show({
+        type: 'success',
+        text1: 'Авторизація пройшла успішно',
+        text2: `Вітаємо, ${user.name}!`,
+      });
+
+      resetForm();
+      navigation.navigate('News');
+    } catch (error) {
+      console.warn('Failed to login user.', error);
       Toast.show({
         type: 'error',
-        text1: 'Помилка авторизації',
-        text2: 'Невірна електронна пошта або пароль.',
+        text1: 'Помилка бази даних',
+        text2: 'Не вдалося прочитати локальні дані користувача.',
       });
-      return;
     }
-
-    setUser({
-      name: AUTH_DEMO_CREDENTIALS.name,
-      surname: AUTH_DEMO_CREDENTIALS.surname,
-      email: AUTH_DEMO_CREDENTIALS.email,
-    });
-
-    Toast.show({
-      type: 'success',
-      text1: 'Авторизація пройшла успішно',
-      text2: `Вітаємо, ${AUTH_DEMO_CREDENTIALS.name}!`,
-    });
-
-    resetForm();
-    navigation.navigate('News');
   };
 
   return {

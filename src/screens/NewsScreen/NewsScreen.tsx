@@ -1,55 +1,65 @@
 import React from 'react';
-import { Animated, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {
+  ActivityIndicator,
+  Animated,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 
 import { ScreenContainer } from '@components/ScreenContainer';
 import { SectionTitle } from '@components/SectionTitle';
 import { NewsCard } from '@components/NewsCard';
-import { newsData } from '@data/news';
-import { useAppContext } from '@context/AppContext';
-import { RootStackParamList } from '@navigation/types';
+import { colors } from '@theme/colors';
 
 import { NewsHeader } from './components/NewsHeader';
 import { styles } from './styles';
-import { useNewsListAnimation } from './useNewsListAnimation';
-
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+import { useNewsScreen } from './useNewsScreen';
 
 export function NewsScreen() {
-  const { user } = useAppContext();
-  const navigation = useNavigation<NavigationProp>();
-  const animatedValues = useNewsListAnimation(newsData.length);
+  const {
+    user,
+    news,
+    isLoading,
+    animatedValues,
+    handleLogout,
+    handleOpenNews,
+  } = useNewsScreen();
 
   return (
     <ScreenContainer>
       <SectionTitle>Останні новини</SectionTitle>
 
-      <NewsHeader user={user} />
+      <NewsHeader user={user} onLogout={handleLogout} />
 
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {newsData.map((item, index) => (
-          <Animated.View
-            key={item.id}
-            style={{
-              opacity: animatedValues[index]?.opacity,
-              transform: [
-                { translateY: animatedValues[index]?.translateY ?? 0 },
-              ],
-            }}
-          >
-            <NewsCard
-              item={item}
-              onPress={() =>
-                navigation.navigate('NewsDetails', { newsId: item.id })
-              }
-            />
-          </Animated.View>
-        ))}
-      </ScrollView>
+      {isLoading ? (
+        <View style={styles.centerState}>
+          <ActivityIndicator color={colors.primary} />
+        </View>
+      ) : news.length === 0 ? (
+        <View style={styles.centerState}>
+          <Text style={styles.emptyText}>Новини ще не завантажені.</Text>
+        </View>
+      ) : (
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {news.map((item, index) => (
+            <Animated.View
+              key={item.id}
+              style={{
+                opacity: animatedValues[index]?.opacity,
+                transform: [
+                  { translateY: animatedValues[index]?.translateY ?? 0 },
+                ],
+              }}
+            >
+              <NewsCard item={item} onPress={() => handleOpenNews(item.id)} />
+            </Animated.View>
+          ))}
+        </ScrollView>
+      )}
     </ScreenContainer>
   );
 }

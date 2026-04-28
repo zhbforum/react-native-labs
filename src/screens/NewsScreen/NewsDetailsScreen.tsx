@@ -1,21 +1,29 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-import { RootStackParamList } from '@navigation/types';
 import { PrimaryButton } from '@components/PrimaryButton';
-import { newsData } from '@data/news';
 import { colors } from '@theme/colors';
 import { spacing } from '@theme/spacing';
 import { typography } from '@theme/typography';
-import { openArticle } from './helpers';
-
-type NewsDetailsRouteProp = RouteProp<RootStackParamList, 'NewsDetails'>;
+import { useNewsDetails } from './useNewsDetails';
 
 export function NewsDetailsScreen() {
-  const route = useRoute<NewsDetailsRouteProp>();
+  const { article, isLoading, handleOpenArticle } = useNewsDetails();
 
-  const article = newsData.find(item => item.id === route.params.newsId);
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator color={colors.primary} />
+      </View>
+    );
+  }
 
   if (!article) {
     return (
@@ -53,7 +61,7 @@ export function NewsDetailsScreen() {
 
         <PrimaryButton
           title="Перейти до джерела"
-          onPress={() => openArticle(article.url)}
+          onPress={handleOpenArticle}
           style={styles.sourceButton}
         />
       </View>
@@ -81,7 +89,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: 220,
-    borderRadius: 18,
+    borderRadius: 8,
     marginBottom: spacing.md,
   },
   title: {
@@ -103,7 +111,7 @@ const styles = StyleSheet.create({
   sourceBlock: {
     marginTop: spacing.lg,
     padding: spacing.md,
-    borderRadius: 16,
+    borderRadius: 8,
     backgroundColor: colors.surface,
     borderWidth: 1,
     borderColor: colors.border,

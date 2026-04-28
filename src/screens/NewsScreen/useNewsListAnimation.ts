@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Animated } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -8,12 +8,14 @@ type AnimatedItem = {
 };
 
 export function useNewsListAnimation(itemsCount: number) {
-  const animatedValues = useRef<AnimatedItem[]>(
-    Array.from({ length: itemsCount }, () => ({
-      opacity: new Animated.Value(0),
-      translateY: new Animated.Value(20),
-    })),
-  ).current;
+  const animatedValues = useMemo<AnimatedItem[]>(
+    () =>
+      Array.from({ length: itemsCount }, () => ({
+        opacity: new Animated.Value(0),
+        translateY: new Animated.Value(20),
+      })),
+    [itemsCount],
+  );
 
   useFocusEffect(
     useCallback(() => {

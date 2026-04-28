@@ -8,15 +8,18 @@ import { RegisterScreen } from '@screens/RegisterScreen/RegisterScreen';
 import { AuthScreen } from '@screens/AuthScreen/AuthScreen';
 import { NewsDetailsScreen } from '@screens/NewsScreen/NewsDetailsScreen';
 import { PhotoViewerScreen } from '@screens/GalleryScreen/PhotoViewerScreen';
+import { useAppContext } from '@context/AppContext';
+import { colors } from '@theme/colors';
 
 import { RootStackParamList, RootTabParamList } from './types';
 import { getTabBarIcon } from './tabBarIcons';
-import { colors } from '@theme/colors';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function MainTabs() {
+  const { user } = useAppContext();
+
   return (
     <Tab.Navigator
       initialRouteName="News"
@@ -64,23 +67,27 @@ function MainTabs() {
         }}
       />
 
-      <Tab.Screen
-        name="Register"
-        component={RegisterScreen}
-        options={{
-          title: 'Реєстрація',
-          tabBarIcon: getTabBarIcon('Register'),
-        }}
-      />
+      {!user && (
+        <>
+          <Tab.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={{
+              title: 'Реєстрація',
+              tabBarIcon: getTabBarIcon('Register'),
+            }}
+          />
 
-      <Tab.Screen
-        name="Auth"
-        component={AuthScreen}
-        options={{
-          title: 'Авторизація',
-          tabBarIcon: getTabBarIcon('Auth'),
-        }}
-      />
+          <Tab.Screen
+            name="Auth"
+            component={AuthScreen}
+            options={{
+              title: 'Авторизація',
+              tabBarIcon: getTabBarIcon('Auth'),
+            }}
+          />
+        </>
+      )}
     </Tab.Navigator>
   );
 }

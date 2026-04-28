@@ -1,6 +1,6 @@
-import { NewsItem } from '@components/NewsCard';
+import type { NewsItem } from '@components/NewsCard';
 
-export const newsData: NewsItem[] = [
+export const seedNewsData: NewsItem[] = [
   {
     id: 1,
     title: 'React Native 0.84: Hermes V1 за замовчуванням',

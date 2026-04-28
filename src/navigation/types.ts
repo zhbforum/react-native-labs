@@ -12,5 +12,6 @@ export type RootStackParamList = {
   };
   PhotoViewer: {
     initialIndex: number;
+    photoIds?: number[];
   };
 };
