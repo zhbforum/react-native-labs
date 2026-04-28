@@ -13,6 +13,7 @@ module.exports = {
           '@theme': './src/theme',
           '@data': './src/data',
           '@context': './src/context',
+          '@api': './src/api',
         },
       },
     ],

@@ -8,11 +8,12 @@ import { RegisterScreen } from '@screens/RegisterScreen/RegisterScreen';
 import { AuthScreen } from '@screens/AuthScreen/AuthScreen';
 import { NewsDetailsScreen } from '@screens/NewsScreen/NewsDetailsScreen';
 import { PhotoViewerScreen } from '@screens/GalleryScreen/PhotoViewerScreen';
+import { PostsScreen } from '@screens/PostsScreen/PostsScreen';
 import { useAppContext } from '@context/AppContext';
 import { colors } from '@theme/colors';
+import { getTabBarIcon } from '@navigation/tabBarIcons';
 
-import { RootStackParamList, RootTabParamList } from './types';
-import { getTabBarIcon } from './tabBarIcons';
+import type { RootStackParamList, RootTabParamList } from '@navigation/types';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -64,6 +65,15 @@ function MainTabs() {
         options={{
           title: 'Галерея',
           tabBarIcon: getTabBarIcon('Gallery'),
+        }}
+      />
+
+      <Tab.Screen
+        name="Posts"
+        component={PostsScreen}
+        options={{
+          title: 'REST API',
+          tabBarIcon: getTabBarIcon('Posts'),
         }}
       />
 

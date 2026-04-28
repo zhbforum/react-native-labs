@@ -1,6 +1,7 @@
 export type RootTabParamList = {
   News: undefined;
   Gallery: undefined;
+  Posts: undefined;
   Register: undefined;
   Auth: undefined;
 };

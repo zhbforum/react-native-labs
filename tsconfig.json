@@ -9,7 +9,8 @@
       "@navigation/*": ["./src/navigation/*"],
       "@theme/*": ["./src/theme/*"],
       "@data/*": ["./src/data/*"],
-      "@context/*": ["./src/context/*"]
+      "@context/*": ["./src/context/*"],
+      "@api/*": ["./src/api/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
